@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <style>
+            .register .nav-tabs .nav-link:hover{
+                border: none;
+            }
+            .text-align{
+                margin-top: -3%;
+                margin-bottom: -9%;
+
+                padding: 10%;
+                margin-left: 30%;
+            }
+            .form-new{
+                margin-right: 22%;
+                margin-left: 20%;
+            }
+            .register-heading{
+                margin-left: 21%;
+                margin-bottom: 10%;
+                color: #e9ecef;
+            }
+            .register-heading h1{
+                margin-left: 21%;
+                margin-bottom: 10%;
+                color: #e9ecef;
+            }
+            .register{
+                background: -webkit-linear-gradient(left, #055a4f, #00c6ff);
+                margin-top: 3%;
+                padding: 3%;
+                border-radius: 2.5rem;
+            }
+            .btnSubmit
+            {
+                width: 350px;
+                height: 30px;
+                border-radius: 1rem;
+                padding: 1.5%;
+                color: #fff;
+                background-color: #03612e;
+                border: none;
+                cursor: pointer;
+                margin-right: 6%;
+                color: rgb(246, 246, 252);
+                margin-top: 4%;
+            }
+            select {
+                width: 500px;
+                margin: 0 -2px;
+                height:40px;
+            }
+            select:focus {
+                min-width: 250px;
+                width: auto;
+            }
+            .buttu{
+                background-color:#03612e;
+                color: white;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                border: none;
+                width:400px;
+                height: 30px;
+                cursor: pointer;
+                border-radius: 20px;
+            }
+    
+    </style>
+
+</head>
+<body>
+    
+<div class="container register">
+            <div class="row">
+                <div class="col-md-12">
+                        <div class="tab-pane fade show active text-align form-new" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <h3 class="register-heading">Insulin Bolus Calculation</h3>
+                            <div class="row register-form">
+                                <div class="col-md-12">
+                                    <form action="{{ url_for('predict')}}" method="post" autocomplete="off" name="google-sheet">
+                                        <div class="form-group">
+                                            <input type="number"  name="cbg" class="form-control" placeholder="Current Blood Glucose" value="" required=""/>
+                                        </div>
+                
+                                        <div class="form-group">
+                                           
+                                            <select id="fooditem" name="food" class="form-control" onchange="displaySelectedValue()"> <!-- Add the name attribute -->
+                                                <option value="select food item">select food item</option>
+                                                <option value="Chapati+Kurma (2 serving)">Chapati+Kurma (2 serving)</option>
+                                                <option value="Chapati+Kurma (3 serving)">Chapati+Kurma (3 serving)</option>
+                                                <option value="Chapati+Kurma (4 serving)">Chapati+Kurma (4 serving)</option>
+                                                <option value="Chapati+Chicken (2 serving)">Chapati+Chicken (2 serving)</option>
+                                                <option value="Chapati+Chicken (3 serving)">Chapati+Chicken (3 serving)</option>
+                                                <option value="Chapati+Chicken (4 serving)">Chapati+Chicken (4 serving)</option>
+                                                <option value="Idli(3 serving)">Idli(3 serving)</option>
+                                                <option value="Idli(4 serving)">Idli(4 serving)</option>
+                                                <option value="Dosa(3 serving)">Dosa(3 serving)</option>
+                                                <option value="Dosa(4 serving)">Dosa(4 serving)</option>
+                                                <option value="Rice+Okra (1 serving)">Rice+Okra (1 serving)</option>
+                                                <option value="Rice+Okra (2 serving)">Rice+Okra (2 serving)</option>
+                                                <option value="Rice+Dal (1 serving)">Rice+Dal (1 serving)</option>
+                                                <option value="Rice+Dal (2 serving)">Rice+Dal (2 serving)</option>
+                                                <option value="Idiyappam (2 serving)">Idiyappam (2 serving)</option>
+                                                <option value="Idiyappam (3 serving)">Idiyappam (3 serving)</option>
+                                                <option value="vellyappam (2 serving)">vellyappam (2 serving)</option>
+                                                <option value="vellyappam (3 serving)">vellyappam (3 serving)</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="selectedValue">Carbohydrate value:</label>
+                                            <input  name="carbohydrate" type="text" id="selectedValue" class="form-control" readonly />
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="number" name="dailydose" class="form-control" placeholder="Total Daily dose" value="" required=""/>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="number" name="isf" class="form-control" placeholder="insulinfactor" value="" required=""/>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="submit" name="submit" class="btnSubmit btn-block" value="calculate" />
+                                        </div>
+                                        <div class="form-group">
+                                            <button class="buttu" name="reset" type="reset">Reset</button>
+                                        </div>
+                                        
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+          
+        <script>
+            function displaySelectedValue() {
+    var select = document.getElementById("fooditem");
+    var selectedValue = document.getElementById("selectedValue");
+  
+    if (select.value === "Chapati+Kurma (2 serving)") {
+      selectedValue.value = 41;
+
+    } else if (select.value === "Chapati+Kurma (3 serving)") {
+      selectedValue.value = 56;
+
+    }else if (select.value === "Chapati+Kurma (4 serving)") {
+        selectedValue.value = 71;
+  
+      }else if (select.value === "Chapati+Chicken (2 serving)") {
+        selectedValue.value = 63;
+  
+      }else if (select.value === "Chapati+Chicken (3 serving)") {
+        selectedValue.value = 78;
+  
+      }else if (select.value === "Chapati+Chicken (4 serving)") {
+        selectedValue.value = 93;
+  
+      }else if (select.value === "Idli(3 serving)") {
+        selectedValue.value = 36;
+  
+      }else if (select.value === "Idli(4 serving)") {
+        selectedValue.value = 48;
+  
+      }else if (select.value === "Dosa(3 serving)") {
+        selectedValue.value = 87;
+  
+      }else if (select.value === "Dosa(4 serving)") {
+        selectedValue.value = 116;
+  
+      }else if (select.value === "Rice+Okra (1 serving)") {
+        selectedValue.value = 60.94;
+  
+      }else if (select.value === "Rice+Okra (2 serving)") {
+        selectedValue.value = 114.34;
+  
+      }else if (select.value === "Rice+Dal (1 serving)") {
+        selectedValue.value = 88.4;
+  
+      }else if (select.value === "Rice+Dal (2 serving)") {
+        selectedValue.value = 141.8;
+  
+      }else if (select.value === "Idiyappam (2 serving)") {
+        selectedValue.value = 21.8;
+  
+      }else if (select.value === "Idiyappam (3 serving)") {
+        selectedValue.value = 32.7;
+  
+      }else if (select.value === "vellyappam (2 serving)") {
+        selectedValue.value = 57.6;
+  
+      }else if (select.value === "vellyappam (3 serving)") {
+        selectedValue.value = 38.4;
+  
+      }
+}
+        </script>
+          <script>
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbxHnJn4n2xKGk2mOi4x_3eCbf5ZVhX2HdMEnTiJcZiTxN6LVysBv7dx9ClrWUxMbQVhFg/exec'
+            const form = document.forms['google-sheet']
+          
+            form.addEventListener('submit', e => {
+              e.preventDefault()
+              fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                .then(response => alert("Thanks for Contacting us..! We Will Contact You Soon..."))
+                .catch(error => console.error('Error!', error.message))
+            })
+          </script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+         </div>
+ {{prediction_text}}
+</body>
+</html>
